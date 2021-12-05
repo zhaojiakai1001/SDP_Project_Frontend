@@ -25,7 +25,8 @@ const FunnelChart = ({
         data={FunnelChartData}
         xField="category"
         yField="count"
-        shape="pyramid"
+        shape="funnel"
+        isTransposed={true}
         height={500}
         loading={loading}
         conversionTag={false}
@@ -34,7 +35,7 @@ const FunnelChart = ({
             type: 'element-active'
           }
         ]}
-        style={{flex: 8}}
+        style={{flex: 8, position: "relative", top: 0}}
       />
     </div>
   );

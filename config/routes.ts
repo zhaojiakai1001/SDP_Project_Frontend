@@ -19,40 +19,6 @@ export default [
     ],
   },
   {
-    path: '/welcome',
-    name: 'welcome',
-    icon: 'smile',
-    component: './Welcome',
-  },
-  {
-    path: '/admin',
-    name: 'admin',
-    icon: 'crown',
-    access: 'canAdmin',
-    component: './Admin',
-    routes: [
-      {
-        path: '/admin/sub-page',
-        name: 'sub-page',
-        icon: 'smile',
-        component: './Welcome',
-      },
-      {
-        component: './404',
-      },
-    ],
-  },
-  {
-    name: 'list.table-list',
-    icon: 'table',
-    path: '/list',
-    component: './TableList',
-  },
-  {
-    path: '/',
-    redirect: '/welcome',
-  },
-  {
     name: '财务状况群组分析',
     icon: 'smile',
     path: '/group/debt',
@@ -65,16 +31,10 @@ export default [
     component: './group/Region',
   },
   {
-    name: '验证状态群组分析',
+    name: '工作情况群组分析',
     icon: 'smile',
-    path: '/group/status',
-    component: './group/Status',
-  },
-  {
-    name: '贷款用途群组分析',
-    icon: 'smile',
-    path: '/group/purpose',
-    component: './group/Purpose',
+    path: '/group/emoTime',
+    component: './group/EmpTime',
   },
   {
     name: '个人中心',

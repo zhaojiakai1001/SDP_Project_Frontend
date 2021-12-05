@@ -1,25 +1,25 @@
 import type { FC } from 'react';
 import {GridContent, PageLoading} from '@ant-design/pro-layout';
 
-import type { RegionData } from './data.d';
+import type { EmpTimeData } from './data.d';
 // @ts-ignore
 import {useRequest} from "umi";
 import {Column} from "@ant-design/charts";
 import { Suspense } from 'react';
 
-const RegionColumnChartData: Record<string, any>[] = []
+const EmpTimeColumnChartData: Record<string, any>[] = []
 
 
 
-type RegionProps = {
-  regionData: RegionData;
+type EmpTimeProps = {
+  empTimeData: EmpTimeData;
   loading: boolean;
 };
 
 
-const Region: FC<RegionProps> = () => {
+const EmpTime: FC<EmpTimeProps> = () => {
 
-  const {data, loading} = useRequest({url: 'http://127.0.0.1:8000/group/region', method: 'post'})
+  const {data, loading} = useRequest({url: 'http://127.0.0.1:8000/group/empTime', method: 'post'})
   console.log(data)
 
   data?.forEach((item: any) => {
@@ -30,11 +30,11 @@ const Region: FC<RegionProps> = () => {
       })
       const category_text = i === 0? "第一类" : (i === 1? "第二类" : (i === 2? "第三类" : "第四类"))
       const listItem = {
-        region: item.addr_state,
+        empTime: item.emp_length,
         category: category_text,
         value: sum
       }
-      RegionColumnChartData.push(listItem)
+      EmpTimeColumnChartData.push(listItem)
     }
 
   })
@@ -44,9 +44,9 @@ const Region: FC<RegionProps> = () => {
       <>
         <Suspense fallback={PageLoading}>
           <Column
-            data={RegionColumnChartData}
+            data={EmpTimeColumnChartData}
             isGroup={true}
-            xField="region"
+            xField="empTime"
             yField="value"
             seriesField="category"
             loading={loading}
@@ -61,4 +61,4 @@ const Region: FC<RegionProps> = () => {
   );
 };
 
-export default Region;
+export default EmpTime;
