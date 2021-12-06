@@ -1,4 +1,4 @@
-export type tabKeyType = 'articles' | 'applications' | 'projects';
+export type tabKeyType = 'loanInfo' | 'applications' | 'projects';
 export interface TagType {
   key: string;
   label: string;

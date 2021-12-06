@@ -1,4 +1,3 @@
-// @ts-ignore
 import { request } from 'umi';
 import type { CurrentUser, ListItemDataType } from './data.d';
 

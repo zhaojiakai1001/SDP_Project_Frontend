@@ -19,6 +19,10 @@ export default [
     ],
   },
   {
+    path: '/',
+    redirect: './accountcenter'
+  },
+  {
     name: '财务状况群组分析',
     icon: 'smile',
     path: '/group/debt',
@@ -33,14 +37,14 @@ export default [
   {
     name: '工作情况群组分析',
     icon: 'smile',
-    path: '/group/emoTime',
+    path: '/group/empTime',
     component: './group/EmpTime',
   },
   {
     name: '个人中心',
     icon: 'smile',
-    path: '/profile',
-    component: './Profile',
+    path: '/accountcenter',
+    component: './AccountCenter',
   },
   {
     name: '个人设置',
