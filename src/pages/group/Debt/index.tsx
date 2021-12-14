@@ -4,14 +4,15 @@ import FunnelChart from "./components/FunnelChart";
 import type {DebtData} from "./data.d";
 // @ts-ignore
 import {useRequest} from "umi";
-import { Suspense } from 'react';
+import {Suspense, useState} from 'react';
 import {Tabs} from "antd";
 import {Column} from "@ant-design/charts";
+import PieChart from "@/pages/components/PieChart";
 
 const { TabPane } = Tabs;
 
 const PubRecFunnelChartData: { category: any; count: any; }[] = []
-const DtiColumnChartData: Record<string, any>[] = []
+let DtiColumnChartData: Record<string, any>[] = []
 
 type DebtProps = {
   debtData: DebtData;
@@ -31,6 +32,8 @@ const Debt: FC<DebtProps> = () => {
   console.log(pubRecData)
   console.log(dtiData)
 
+  DtiColumnChartData = []
+
   pubRecData?.forEach((item: any) => {
     item.pubRec.forEach((iitem: any, index: any) => {
       const listItem = {
@@ -47,7 +50,7 @@ const Debt: FC<DebtProps> = () => {
       item.pubRec[i].amount.forEach((num: any) => {
         sum = sum + num
       })
-      const category_text = i === 0? "第一类" : (i === 1? "第二类" : (i === 2? "第三类" : "第四类"))
+      const category_text = i === 0? "pubRec=0" : (i === 1? "pubRec=1" : (i === 2? "pubRec<5" : "pubRec>5"))
       const listItem = {
         dti: item.dti[0] + "~" + item.dti[1],
         category: category_text,
@@ -57,6 +60,33 @@ const Debt: FC<DebtProps> = () => {
     }
 
   })
+
+  const [pieData, setPieData] = useState([]);
+  const [pieTitle, setPieTitle] = useState('');
+
+  const onColumnReady = (plot: any) => {
+    plot.on('element:click', (...args: any) => {
+      const tmp = args[0].data
+      console.log(tmp)
+      const pData: any[] = []
+      setPieTitle(tmp.data?.dti)
+      let i = 0
+      DtiColumnChartData.forEach((item: any) => {
+        i++;
+        if(i > 24) return
+        console.log(item)
+        if(item.dti === tmp.data?.dti) {
+          pData.push(item)
+        }
+      })
+      i = 0
+      console.log(pData)
+      // @ts-ignore
+      setPieData(pData)
+      console.log(pieData)
+    })
+  }
+
 
   return (
     <GridContent>
@@ -75,7 +105,7 @@ const Debt: FC<DebtProps> = () => {
             <Suspense fallback={PageLoading}>
               <Column
                 data={DtiColumnChartData}
-                isGroup={true}
+                isStack={true}
                 xField="dti"
                 yField="value"
                 seriesField="category"
@@ -84,7 +114,24 @@ const Debt: FC<DebtProps> = () => {
                   start: 0,
                   end: 1
                 }}
+                label={{
+                    position: 'middle'
+                }}
+                connectedArea={{
+                  style: (oldStyle) => {
+                    return {
+                      fill: 'rgba(0,0,0,0.25)',
+                      stroke: oldStyle.fill,
+                      lineWidth: 0.5,
+                    };
+                  },
+                }}
+                onReady={onColumnReady}
               />
+              <PieChart pieChartData={{
+                PieChartData: pieData,
+                title: pieTitle
+              }}/>
             </Suspense>
           </TabPane>
         </Tabs>

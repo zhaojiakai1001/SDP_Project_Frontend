@@ -12,7 +12,7 @@ const FunnelChart = ({
   loading: boolean
   }
 ) => {
-  console.log(FunnelChartData.length)
+  console.log(FunnelChartData)
   return (
     <div style={{display: "flex"}}>
       <div style={{flex: 1}}>
