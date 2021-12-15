@@ -9,6 +9,11 @@ export type FunnelChartDataType = {
   count: number
 }
 
+export type LineChartDataType = {
+  category: string, // 按数量分类
+  count: number
+}
+
 export interface DebtData {
   PubRecLineCompareChartData: LineCompareChartDataType[],
   PubRecFunnelChartData: FunnelChartDataType[],

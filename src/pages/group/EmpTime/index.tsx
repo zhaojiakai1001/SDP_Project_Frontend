@@ -30,7 +30,7 @@ const EmpTime: FC<EmpTimeProps> = () => {
       item.pubRec[i].amount.forEach((num: any) => {
         sum = sum + num
       })
-      const category_text = i === 0? "pubRec=0" : (i === 1? "pubRec=1" : (i === 2? "pubRec<5" : "pubRec>5"))
+      const category_text = i === 0? "低违约风险" : (i === 1? "中违约风险" : (i === 2? "高违约风险" : "极高违约风险"))
       const listItem = {
         empTime: item.emp_length,
         category: category_text,
@@ -71,12 +71,18 @@ const EmpTime: FC<EmpTimeProps> = () => {
     <GridContent>
       <>
         <Suspense fallback={PageLoading}>
+          <div style={{display: "flex", padding: 30}}>
+            <div style={{padding: 30}}>工作年限统计数据</div>
+            <div style={{padding: 30}}>横轴：工作年限</div>
+            <div style={{padding: 30}}>纵轴：人数</div>
+          </div>
           <Column
             data={EmpTimeColumnChartData}
             isStack={true}
             xField="empTime"
             yField="value"
             seriesField="category"
+            maxColumnWidth={50}
             loading={loading}
             slider={{
               start: 0,

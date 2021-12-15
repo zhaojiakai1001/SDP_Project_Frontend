@@ -1,28 +1,28 @@
 import type { FC } from 'react';
 import {GridContent, PageLoading} from '@ant-design/pro-layout';
 
-import type { RegionData } from './data.d';
+import type { AvgCurBalData } from './data.d';
 // @ts-ignore
 import {useRequest} from "umi";
 import {Column} from "@ant-design/charts";
 import {Suspense, useState} from 'react';
 import PieChart from "@/pages/components/PieChart";
 
-let RegionColumnChartData: Record<string, any>[] = []
+let AvgCurBalColumnChartData: Record<string, any>[] = []
 
 
-type RegionProps = {
-  regionData: RegionData;
+type AvgCurBalProps = {
+  avgCurBalData: AvgCurBalData;
   loading: boolean;
 };
 
 
-const Region: FC<RegionProps> = () => {
+const AvgCurBal: FC<AvgCurBalProps> = () => {
 
-  const {data, loading} = useRequest({url: 'http://127.0.0.1:8000/group/region', method: 'post'})
-  //console.log(data)
+  const {data, loading} = useRequest({url: 'http://127.0.0.1:8000/group/avg_cur_bal', method: 'post'})
+  console.log(data)
 
-  RegionColumnChartData = []
+  AvgCurBalColumnChartData = []
 
   data?.forEach((item: any) => {
     for (let i = 0; i < 4; i++) {
@@ -32,11 +32,11 @@ const Region: FC<RegionProps> = () => {
       })
       const category_text = i === 0? "低违约风险" : (i === 1? "中违约风险" : (i === 2? "高违约风险" : "极高违约风险"))
       const listItem = {
-        region: item.addr_state,
+        avgCurBal: item.avg_cur_bal[0] + "~" + item.avg_cur_bal[1],
         category: category_text,
         value: sum
       }
-      RegionColumnChartData.push(listItem)
+      AvgCurBalColumnChartData.push(listItem)
     }
 
   })
@@ -49,14 +49,13 @@ const Region: FC<RegionProps> = () => {
       const tmp = args[0].data
       console.log(tmp)
       const pData: any[] = []
-      setPieTitle(tmp.data?.region)
+      setPieTitle(tmp.data?.avgCurBal)
       let i = 0
-      console.log('Re:' + RegionColumnChartData.length)
-      RegionColumnChartData.forEach((item: any) => {
+      AvgCurBalColumnChartData.forEach((item: any) => {
         i++;
-        if(i > 200) return
+        if(i > 44) return
         console.log(item)
-        if(item.region === tmp.data?.region) {
+        if(item.avgCurBal === tmp.data?.avgCurBal) {
           pData.push(item)
         }
       })
@@ -68,20 +67,19 @@ const Region: FC<RegionProps> = () => {
     })
   }
 
-
   return (
     <GridContent>
       <>
         <Suspense fallback={PageLoading}>
           <div style={{display: "flex", padding: 30}}>
-            <div style={{padding: 30}}>地区统计数据</div>
-            <div style={{padding: 30}}>横轴：地区（州）</div>
+            <div style={{padding: 30}}>过去24个月交易统计数据</div>
+            <div style={{padding: 30}}>横轴：过去24个月交易单数</div>
             <div style={{padding: 30}}>纵轴：人数</div>
           </div>
           <Column
-            data={RegionColumnChartData}
+            data={AvgCurBalColumnChartData}
             isStack={true}
-            xField="region"
+            xField="avgCurBal"
             yField="value"
             seriesField="category"
             maxColumnWidth={50}
@@ -114,4 +112,4 @@ const Region: FC<RegionProps> = () => {
   );
 };
 
-export default Region;
+export default AvgCurBal;
